@@ -1,0 +1,87 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#whatsapp-web-root {
+    display: grid;
+    grid-template-columns: 100px 1fr 0fr;
+    height: 100vh;
+}
+
+#left-menu {
+    padding: 1rem 0;
+    background-color: 	#2D3748;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+#chat-list {
+    background-color: #EDF2F7;
+}
+
+#chat-messages-container {
+    background-color:#2D3748;
+    display: none;
+}
+
+.icon {
+    height: 60px;
+    width: 60px;
+    background-color: #CBD5E0;
+    border-radius: 0.75rem;
+    transition: all 500ms linear;
+}
+
+.icon:hover {
+    background-color: #A0AEC0;
+}
+
+@media (width >= 768px) {
+    #whatsapp-web-root {
+        grid-template-columns: 100px 460px 1fr;
+    }
+
+    #chat-messages-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .whatsapp-mac-title {
+        position: relative;
+        top: -3rem;
+        font-size: 2rem;
+        font-size: 600;
+        color: grey;
+        text-align: center;
+    }
+}
+
+ .robot {
+    width: 460px;
+   height: 810px;
+    animation: bounce 1s infinite ease-in-out;
+  }
+
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+  .btn{
+     height: 60px;
+    width: 60px;
+    background-color: #CBD5E0;
+    border-radius: 0.75rem;
+    transition: all 500ms linear;
+    font-family: "Abril Fatface", serif;
+  font-weight: 400;
+  font-style: normal;
+  }
