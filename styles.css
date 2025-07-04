@@ -27,6 +27,11 @@
     background-color:#2D3748;
     display: none;
 }
+.gif-container{
+    height: 480px;
+    width: 400px;
+    background-color: white;
+}
 
 .icon {
     height: 60px;
