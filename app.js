@@ -93,3 +93,136 @@ function handleLogout() {
     }
   });
 }
+
+
+function handleAdd() {
+ Swal.fire({
+  title: "Add a Book",
+  html: `
+  <input id ="book-id" class="swal2-input" placeholder="Book ID">
+  <input id = "book-title" class="swal2-input" placeholder="Title">
+  <input id = "book-author" class="swal2-input" placeholder="Author">
+  `,
+  confirmButtonText : "Add a Book",
+  preConfirm: () => {
+    const id = document.getElementById("book-id").value;
+    const title = document.getElementById("book-title").value;
+    const author = document.getElementById("book-author").value;
+
+    const user = JSON.parse(localStorage.getItem("userData"));
+
+    return fetch("http://localhost:18080/addBook",{
+      method: "POST",
+      headers: { "Content-type": "application/json"},
+      body: JSON.stringify({
+        user,
+        book: {id: Number(id),title,author}
+      })
+    })
+    .then(res=>res.text())
+    .then(msg => Swal.fire("✅ Added ",msg," success"))
+    .catch(err=>Swal.fire("😑 Error ",err.message," error"));
+  }
+ });
+}
+
+function handleSearch() {
+  Swal.fire({
+    title: "🔎 Search Book",
+    input: "text",
+    inputLabel: "Enter Book Title",
+    confirmButtonText: "Search",
+    preConfirm: (title) => {
+      return fetch(`https://localhost:18080/searchBook?title=${encodeURIComponent(title)}`)
+      .then(res => res.json())
+      .then(data => {
+        if(data.length===0){
+          Swal.fire("Not Found","No books match that title.","info");
+
+        }
+        else{
+          let results = data.map(b=> `${b.title} by ${b.author} [ID: ${b.id}]`).join("<br>");
+          Swal.fire("Results",results,"success");
+        }
+      })
+      .catch(err => Swal.fire("❌ Error ",err.message,"error"));
+    }
+  });
+}
+
+function handleIssue() {
+  Swal.fire({
+    title : "📕 Issue Book ",
+    input: "text",
+    inputLabel: "Enter Book ID",
+    confirmButtonText: "Issue",
+    preConfirm: (bookId) => {
+      const user = JSON.parse(localStorage.getItem("userData"));
+      return fetch("https://localhost:18080/issueBook", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({user,bookId: Number(bookId)})
+      })
+      .then(res=> res.text())
+      .then(msg => Swal.fire("✅ Issued",msg,"success"))
+      .catch(err => Swal.fire("❌ Error", err.message,"error"));
+    }
+  });
+}
+
+function handleReturn() {
+  Swal.fire ( {
+    title: "🔄 Return Book",
+    input: "text",
+    inputLabel: "Enter Book ID",
+    confirmButtonText: "Return",
+    preConfirm: (bookId) => {
+      const user = JSON.parse(localStorage.getItem("userData"));
+      return fetch("https://localhost:18080/returnBook",{
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body:JSON.stringify({user,bookId:Number(bookId)})
+      })
+      .then(res=>res.text())
+      .then(msg=> Swal.fire("✅Returned",msg,"success"))
+      .catch(err=>Swal.fire("❌ Error",err.message,"error"));
+    }
+  });
+
+}
+function handleDelete() {
+  Swal.fire({
+    title: "🗑️ Delete Book",
+    input: "text",
+    inputLabel: "Enter Book ID",
+    confirmButtonText: "Delete",
+    preConfirm: (bookId) => {
+      return fetch(`https://localhost:18080/deleteBook?id=${bookId}`,{
+        method:"DELETE"
+      })
+      .then(res=> res.text())
+      .then(msg=> Swal.fire("✅ Deleted",msg,"success"))
+      .catch(err=> Swal.fire("❌ Error",err.message,"error"));
+    }
+  });
+}
+
+function handleList() {
+  fetch("https://localhost:18080/listBooks")
+  .then(res=> res.json())
+  .then(data => {
+    if(data.length===0) {
+      Swal.fire("📚 Empty "," No books int he Library yet","info");
+
+    }
+    else{
+      let books=data.map(b=> `${b.title} by ${b.author} [ID:${b.id}] -${b.is_issued ? "❌ Issued" : "✅ Available"}`).join("<br><br>");
+      Swal.fire({
+        title: "📚 Book List",
+        html: books,
+        width: 600
+      });
+    }
+  })
+  .catch(err => Swal.fire("❌ Error",err.message,"error"));
+}
