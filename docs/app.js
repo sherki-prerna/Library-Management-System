@@ -35,7 +35,7 @@ function checkRole(allowedRole, actionName) {
   }
   return true;
 }
-
+//handle it fine
 function handleLogin() {
   if (!userData.role) return Swal.fire("❌ Please select your role first!");
 
