@@ -39,6 +39,7 @@ router.post("/loginUser", async (req, res) => {
     }
 
     const user = result.rows[0];
+   
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Incorrect password" });
@@ -49,6 +50,7 @@ router.post("/loginUser", async (req, res) => {
     console.error("Login error:", err);
     res.status(500).json({ message: "Internal server error" });
   }
+
 });
 
 module.exports = router;

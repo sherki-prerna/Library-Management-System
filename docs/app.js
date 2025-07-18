@@ -216,7 +216,7 @@ function handleReturn() {
     }
   });
 }
-
+// prototype
 function handleDelete() {
   if (!checkRole("teacher", "delete books")) return;
 
@@ -247,4 +247,6 @@ function handleList() {
     Swal.fire({ title: "📚 Book List", html: books, width: 600 });
   })
   .catch(err => Swal.fire("❌ Error", err.message, "error"));
+
+  
 }
